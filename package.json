@@ -1,0 +1,25 @@
+{
+  "name": "certichain-dapp",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CertiChain Solidity and MetaMask certificate verification DApp",
+  "scripts": {
+    "chain": "node scripts/start-chain.cjs",
+    "compile": "node scripts/compile.cjs",
+    "deploy": "node scripts/deploy.cjs",
+    "dev": "vite --host 127.0.0.1",
+    "start": "vite --host 127.0.0.1",
+    "test": "node --test tests/*.test.cjs",
+    "build": "vite build",
+    "preview": "vite preview",
+    "accounts": "node scripts/show-test-accounts.cjs"
+  },
+  "dependencies": {
+    "ethers": "^6.13.4"
+  },
+  "devDependencies": {
+    "ganache": "^7.9.2",
+    "solc": "0.8.20",
+    "vite": "^5.4.0"
+  }
+}

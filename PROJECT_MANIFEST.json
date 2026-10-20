@@ -1,0 +1,16 @@
+{
+  "project": "CertiChain",
+  "assignment": "CSE4444 Blockchain Technology Assignment 2",
+  "contents": [
+    "contracts/CertiChain.sol",
+    "frontend/index.html",
+    "frontend/style.css",
+    "frontend/app.js",
+    "frontend/abi.json",
+    "README.md",
+    "docs/TEST_PLAN.md",
+    "docs/DEPLOYMENT_NOTES.md",
+    "docs/YourName_RegNum_BT_Assignment2_TEMPLATE.docx"
+  ],
+  "important": "Deployment and screenshots must be produced by the student after running the project; no deployment is claimed in this package."
+}

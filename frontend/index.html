@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CertiChain | Certificate Verification</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-mark">CC</div>
+    <div><strong>CertiChain</strong><span>Blockchain certificate verification</span></div>
+    <button id="connectBtn" class="button secondary">Connect MetaMask</button>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="eyebrow">TRUST • VERIFY • PROTECT</div>
+      <h1>Certificates you can <em>trust.</em></h1>
+      <p>Verify a certificate's fingerprint against an Ethereum smart contract. The original document stays on your device.</p>
+      <div class="hero-note"><span class="pulse"></span><span id="walletStatus">Wallet not connected</span></div>
+    </section>
+
+    <section class="notice">
+      <strong>Before you begin</strong>
+      <p>Deploy <code>CertiChain.sol</code> in Remix, then paste the deployed contract address in Settings. The wallet must be connected to the same network as the contract.</p>
+    </section>
+
+    <section class="panel settings">
+      <div class="section-heading"><div><span class="step">00</span><h2>Connection settings</h2></div></div>
+      <label for="contractAddress">Deployed contract address</label>
+      <div class="input-row">
+        <input id="contractAddress" placeholder="0x..." spellcheck="false">
+        <button id="saveAddressBtn" class="button secondary">Save</button>
+      </div>
+      <p class="hint">Saved in this browser only. Never enter your seed phrase or private key here.</p>
+      <p id="networkStatus" class="status-line">Contract not configured.</p>
+    </section>
+
+    <div class="cards">
+      <section class="panel">
+        <div class="section-heading"><div><span class="step">01</span><h2>Register certificate</h2></div><span class="tag">Issuer only</span></div>
+        <p class="muted">Register a certificate fingerprint. This transaction requires the contract owner's wallet.</p>
+        <label for="issueFile">Certificate file</label>
+        <input id="issueFile" type="file" accept=".pdf,.png,.jpg,.jpeg">
+        <label for="certificateName">Certificate name</label>
+        <input id="certificateName" placeholder="e.g. Bachelor of Technology">
+        <label for="recipient">Recipient wallet address</label>
+        <input id="recipient" placeholder="0x..." spellcheck="false">
+        <div class="hash-box"><span>Calculated SHA-256 fingerprint</span><code id="issueHash">Select a file to calculate its fingerprint.</code></div>
+        <button id="issueBtn" class="button primary full">Register on blockchain</button>
+        <p id="issueStatus" class="status-line" aria-live="polite"></p>
+      </section>
+
+      <section class="panel">
+        <div class="section-heading"><div><span class="step">02</span><h2>Verify certificate</h2></div><span class="tag green">Public lookup</span></div>
+        <p class="muted">Choose the certificate file to compare its fingerprint with the blockchain record.</p>
+        <label for="verifyFile">Certificate file</label>
+        <input id="verifyFile" type="file" accept=".pdf,.png,.jpg,.jpeg">
+        <div class="hash-box"><span>Calculated SHA-256 fingerprint</span><code id="verifyHash">Select a file to calculate its fingerprint.</code></div>
+        <button id="verifyBtn" class="button primary full">Verify certificate</button>
+        <div id="verifyResult" class="result hidden" aria-live="polite"></div>
+      </section>
+    </div>
+
+    <section class="panel revoke-panel">
+      <div class="section-heading"><div><span class="step">03</span><h2>Revoke certificate</h2></div><span class="tag">Issuer only</span></div>
+      <p class="muted">Revocation marks a registered certificate as revoked; it does not erase its on-chain history.</p>
+      <label for="revokeHash">Certificate SHA-256 fingerprint (bytes32)</label>
+      <input id="revokeHash" placeholder="0x + 64 hexadecimal characters" spellcheck="false">
+      <button id="revokeBtn" class="button danger">Revoke certificate</button>
+      <p id="revokeStatus" class="status-line" aria-live="polite"></p>
+    </section>
+
+    <footer><span>CertiChain · CSE4444 Blockchain Technology</span><span>Demo project · Do not use for official credential decisions</span></footer>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>

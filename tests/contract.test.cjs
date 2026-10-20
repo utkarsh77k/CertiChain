@@ -1,0 +1,33 @@
+const {test,before} = require('node:test');
+const assert = require('node:assert/strict');
+const ganache = require('ganache');
+const {ethers} = require('ethers');
+const {compile} = require('../scripts/compile.cjs');
+let provider, owner, stranger, contract, recipient, hash;
+before(async()=>{
+ const ganacheProvider=ganache.provider({logging:{quiet:true},wallet:{deterministic:true,totalAccounts:3},chain:{chainId:1337}});
+ provider=new ethers.BrowserProvider(ganacheProvider);
+ owner=await provider.getSigner(0);
+ stranger=await provider.getSigner(1);
+ recipient=await stranger.getAddress();
+ const artifact=compile();
+ const factory=new ethers.ContractFactory(artifact.abi,artifact.bytecode,owner);
+ contract=await factory.deploy();
+ await contract.waitForDeployment();
+ hash=ethers.sha256(ethers.toUtf8Bytes('sample certificate document bytes'));
+});
+test('constructor sets owner',async()=>assert.equal(await contract.owner(),await owner.getAddress()));
+test('owner can register a valid certificate',async()=>{
+ await (await contract.issueCertificate(hash,'Demo Certificate',recipient)).wait();
+ const c=await contract.verifyCertificate(hash);
+ assert.equal(c.exists,true); assert.equal(c.revoked,false); assert.equal(c.certificateName,'Demo Certificate');assert.equal(c.recipient,recipient);
+});
+test('duplicate registration is rejected',async()=>await assert.rejects(contract.issueCertificate.staticCall(hash,'Duplicate',recipient),/Certificate already registered/));
+test('empty name is rejected',async()=>await assert.rejects(contract.issueCertificate.staticCall(ethers.sha256(ethers.toUtf8Bytes('second')),'',recipient),/Certificate name is required/));
+test('zero hash is rejected',async()=>await assert.rejects(contract.issueCertificate.staticCall(ethers.ZeroHash,'Name',recipient),/Certificate hash cannot be zero/));
+test('zero recipient is rejected',async()=>await assert.rejects(contract.issueCertificate.staticCall(ethers.sha256(ethers.toUtf8Bytes('third')),'Name',ethers.ZeroAddress),/Recipient cannot be zero address/));
+test('unauthorized registration is rejected',async()=>await assert.rejects(contract.connect(stranger).issueCertificate.staticCall(ethers.sha256(ethers.toUtf8Bytes('unauthorized')),'Unauthorized',recipient),/Only contract owner can do this/));
+test('unknown certificate is not registered',async()=>{const c=await contract.verifyCertificate(ethers.sha256(ethers.toUtf8Bytes('unknown')));assert.equal(c.exists,false);});
+test('unauthorized revocation is rejected',async()=>await assert.rejects(contract.connect(stranger).revokeCertificate.staticCall(hash),/Only contract owner can do this/));
+test('owner can revoke certificate',async()=>{await (await contract.revokeCertificate(hash)).wait();const c=await contract.verifyCertificate(hash);assert.equal(c.exists,true);assert.equal(c.revoked,true);});
+test('duplicate revocation is rejected',async()=>await assert.rejects(contract.revokeCertificate.staticCall(hash),/Certificate already revoked/));

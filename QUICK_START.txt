@@ -1,0 +1,16 @@
+CERTICHAIN — QUICK START (VS CODE)
+
+1. Install Node.js 20+ and MetaMask.
+2. Open this folder in VS Code.
+3. Terminal: npm install
+4. Terminal 1: npm run chain (leave open)
+5. Terminal 2: npm run deploy
+6. Terminal 3: npm run dev
+7. Open http://127.0.0.1:5173
+8. In MetaMask add network http://127.0.0.1:8545, chain ID 1337.
+9. Run npm run accounts and import the FIRST local-only demo key into a separate MetaMask test wallet. Never use it with real funds.
+10. Connect MetaMask and issue/verify dummy certificate files.
+11. Run npm test for automated contract tests.
+
+IMPORTANT: Assignment also requires Remix compile/deploy/test screenshots.
+See README.md for all details.

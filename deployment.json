@@ -1,0 +1,9 @@
+{
+  "contractAddress": "0xe78A0F7E598Cc8b0Bb87894B0F60dD2a88d6a8Ab",
+  "chainId": 1337,
+  "networkName": "Local Ganache",
+  "rpcUrl": "http://127.0.0.1:8545",
+  "owner": "0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1",
+  "transactionHash": "0x874e712a53ac9adc98524885fa5ecdada54003f8514100e44953899ff91e6dc2",
+  "createdAt": "2026-10-20T16:33:54.565Z"
+}
